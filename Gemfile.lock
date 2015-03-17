@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/sebastianiorga/effective_ckeditor.git
+  revision: eb7818e22b77f1f2a8437d9ca0bb5e00ca1d04d7
+  specs:
+    effective_ckeditor (1.4.2)
+      rails (>= 3.2.0)
+      sass-rails
+
+GIT
   remote: git://github.com/sebastianiorga/effective_datatables.git
   revision: d131aeca441f9e6fafaaf1e10183cbe3447a65f6
   specs:
@@ -11,14 +19,8 @@ GIT
       sass-rails
 
 GIT
-  remote: git://github.com/sebastianiorga/effective_slugs.git
-  revision: 70d490c192340a4cea15129d121a8fb905cbaaf7
-  specs:
-    effective_slugs (1.1.1)
-      rails (>= 3.2.0)
-
-PATH
-  remote: ../effective_pages
+  remote: git://github.com/sebastianiorga/effective_pages.git
+  revision: cd1cfd2947483d34d017788d5863c059b79fe24d
   specs:
     effective_pages (0.9.9)
       effective_ckeditor (>= 1.2.1)
@@ -32,14 +34,22 @@ PATH
       sass-rails
       simple_form
 
-PATH
-  remote: ../effective_regions
+GIT
+  remote: git://github.com/sebastianiorga/effective_regions.git
+  revision: 5b2c5af31b0a29da81dfbd7721aa1b580e39a529
   specs:
     effective_regions (1.4.3)
       effective_ckeditor (>= 1.1.0)
       migrant
       rails (>= 3.2.0)
       virtus
+
+GIT
+  remote: git://github.com/sebastianiorga/effective_slugs.git
+  revision: 70d490c192340a4cea15129d121a8fb905cbaaf7
+  specs:
+    effective_slugs (1.1.1)
+      rails (>= 3.2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -109,9 +119,6 @@ GEM
     debug_inspector (0.0.2)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
-    effective_ckeditor (1.4.2)
-      rails (>= 3.2.0)
-      sass-rails
     effective_roles (1.3.0)
       rails (>= 3.2.0)
     equalizer (0.0.9)
@@ -267,7 +274,7 @@ DEPENDENCIES
   bootstrap-sass (~> 3.3.4)
   byebug
   coffee-rails (~> 4.1.0)
-  effective_ckeditor
+  effective_ckeditor!
   effective_datatables!
   effective_pages!
   effective_regions!
