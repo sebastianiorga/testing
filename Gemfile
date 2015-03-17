@@ -46,13 +46,16 @@ group :development, :test do
 end
 
 gem 'bootstrap-sass', '~> 3.3.4'
-gem 'effective_regions'
+gem 'effective_ckeditor'
+gem 'effective_regions', path: '../effective_regions'
 gem 'effective_datatables', github: 'sebastianiorga/effective_datatables'
-gem 'effective_pages', github: 'sebastianiorga/effective_pages'
+gem 'effective_pages', path: '../effective_pages'
 
-gem 'effective_slugs'
+gem 'effective_slugs', github: 'sebastianiorga/effective_slugs'
+
 gem 'effective_roles'
 gem "haml-rails", "~> 0.9"
 
 gem 'simple_form'
 gem 'quiet_assets'
+gem 'responders', '~> 2.0'
