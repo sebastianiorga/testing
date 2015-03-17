@@ -47,8 +47,8 @@ end
 
 gem 'bootstrap-sass', '~> 3.3.4'
 gem 'effective_regions'
-gem 'effective_datatables', path: '../effective_datatables'
-gem 'effective_pages'
+gem 'effective_datatables', github: 'sebastianiorga/effective_datatables'
+gem 'effective_pages', github: 'sebastianiorga/effective_pages'
 
 gem 'effective_slugs'
 gem 'effective_roles'
