@@ -1,6 +1,5 @@
-GIT
-  remote: git://github.com/sebastianiorga/effective_datatables.git
-  revision: 9e998214a603c847cc326fd8ad9ea966e77d0d60
+PATH
+  remote: ../effective_datatables
   specs:
     effective_datatables (1.3.4)
       coffee-rails
@@ -253,6 +252,7 @@ DEPENDENCIES
   rails (= 4.2.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  simple_form
   spring
   turbolinks
   uglifier (>= 1.3.0)
