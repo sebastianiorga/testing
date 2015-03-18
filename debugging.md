@@ -244,11 +244,13 @@ Add gem, restart app. Load page, js console errors about ckeditor files. Add gem
 
 ~~Ahh, the parameterized url is meant to just hit the pages controller. But `http://localhost:3000/asd?edit=true` also doesn't manage to load the ckeditor stuff. What's up with that?~~
 
-The page with slug 'asd' didn't exist anymore and I was just reloading the wrong page.
+~~The page with slug 'asd' didn't exist anymore and I was just reloading the wrong page.~~
 
 Interlude: We need to [strong_paramaterize the effective_menus params](https://github.com/sebastianiorga/effective_regions/commit/5b2c5af31b0a29da81dfbd7721aa1b580e39a529). Now we can save menus. (Assuming we visit on non-slugged path).
 
-Continuing: Hmmm. One of the pages didn't trigger the region editor. Heisenbug. Deleted it and all other pages + menus work fine.
+~~Continuing: Hmmm. One of the pages didn't trigger the region editor. Heisenbug. Deleted it and all other pages + menus work fine.~~
+
+I'm a scumbag and did not define a proper template file. As such pages requiring the template file that contained only 'water 2014' didn't trigger the CKEditor(duhhhh).
 
 ###Last quibble
 
