@@ -11,7 +11,57 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2) do
+ActiveRecord::Schema.define(version: 20150318094551) do
+
+  create_table "assets", force: :cascade do |t|
+    t.string   "title",         limit: 255
+    t.text     "description",   limit: 65535
+    t.string   "tags",          limit: 255
+    t.text     "extra",         limit: 65535
+    t.integer  "user_id",       limit: 4
+    t.string   "content_type",  limit: 255
+    t.string   "upload_file",   limit: 255
+    t.string   "data",          limit: 255
+    t.boolean  "processed",     limit: 1,     default: false
+    t.string   "aws_acl",       limit: 255,   default: "public-read"
+    t.integer  "data_size",     limit: 4
+    t.integer  "height",        limit: 4
+    t.integer  "width",         limit: 4
+    t.text     "versions_info", limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "assets", ["content_type"], name: "index_assets_on_content_type", using: :btree
+  add_index "assets", ["user_id"], name: "index_assets_on_user_id", using: :btree
+
+  create_table "attachments", force: :cascade do |t|
+    t.integer "asset_id",        limit: 4
+    t.string  "attachable_type", limit: 255
+    t.integer "attachable_id",   limit: 4
+    t.integer "position",        limit: 4
+    t.string  "box",             limit: 255
+  end
+
+  add_index "attachments", ["asset_id"], name: "index_attachments_on_asset_id", using: :btree
+  add_index "attachments", ["attachable_id"], name: "index_attachments_on_attachable_id", using: :btree
+  add_index "attachments", ["attachable_type", "attachable_id"], name: "index_attachments_on_attachable_type_and_attachable_id", using: :btree
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer  "priority",   limit: 4,     default: 0, null: false
+    t.integer  "attempts",   limit: 4,     default: 0, null: false
+    t.text     "handler",    limit: 65535,             null: false
+    t.text     "last_error", limit: 65535
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by",  limit: 255
+    t.string   "queue",      limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "menu_items", force: :cascade do |t|
     t.integer "menu_id",       limit: 4

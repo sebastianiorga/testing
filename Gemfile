@@ -59,3 +59,6 @@ gem "haml-rails", "~> 0.9"
 gem 'simple_form'
 gem 'quiet_assets'
 gem 'responders', '~> 2.0'
+gem 'effective_assets', path: '../effective_assets'
+
+gem 'figaro'
