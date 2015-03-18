@@ -27,7 +27,7 @@ $  rails g effective_pages:install
 
 $  rake db:migrate
 
-Add asset helpers/sprockest stuff to application js/scss/html.erb.
+Add asset helpers/sprockets stuff to application js/scss/html.erb.
 
 $  rails s
 
@@ -62,7 +62,10 @@ Add
 ```ruby
 gem 'effective_slugs'
 ```
- explicitly in Gemfile makes this go away(dependency misconfiguration in the effective_pages gem?)
+ explicitly in Gemfile makes this go away~~(dependency misconfiguration in the effective_pages gem?)~~ No need to actually add these gems to the Gemfile, we could have gotten away with just requiring them in application.rb. Using [#add_dependency 'gem_name' doesn't require it](https://groups.google.com/forum/#!topic/ruby-bundler/3TPXWDikP0c), as far as I know. The possible fixes are:
+ 1. require the stuff explicitly in gem_name/lib/gem_name.rb(the correct way to handle this, I think) OR
+ 2. require everything in the Rails app OR
+ 3. add the gems to the Rails app Gemfile, which requires everything by default(this isn't bad for development when wanting to switch between local gems/github/rubygems)
 
 $  ctrl-c
 
@@ -160,7 +163,7 @@ navigate to localhost:3000/admin/pages
 
 #Great Success!
 
-Using test commit 7ec780fae5f9bf7238d2f7a9046e99342cbcfc75 and my EDT fork at d131aeca441f9e6fafaaf1e10183cbe3447a65f6
+Using testing application commit [7ec780](https://github.com/sebastianiorga/testing/commit/7ec780) and my EDT fork at [d131ae](https://github.com/sebastianiorga/effective_datatables/commit/d131ae)
 
 navigate to localhost:3000/admin/pages/new
 
@@ -210,7 +213,7 @@ The issue here is cute. Problem is in the [page form partial](https://github.com
 
 That value argument doesn't actually do anything with the simple_form helper. That problem DOESN'T trigger an error for the layout field right below(that one made me laugh :D) because the layout field has a default value set in the migration whereas template has false.
 
-Ok. Fork pages [and fix](https://github.com/sebastianiorga/effective_pages/commit/cd1cfd2947483d34d017788d5863c059b79fe24d). Update testing app to 17d6bfb and now we can save.
+Ok. Fork pages [and fix](https://github.com/sebastianiorga/effective_pages/commit/cd1cfd2947483d34d017788d5863c059b79fe24d). Update [testing app to 17d6bfb](https://github.com/sebastianiorga/testing/commit/17d6bfb) and now we can save.
 
 ##Eighth error
 
@@ -237,16 +240,22 @@ Add gem, restart app. Load page, js console errors about ckeditor files. Add gem
 
 ##Tenth error(sort of)
 
-Basically `http://localhost:3000/edit/asd` hits `Effective::RegionsController#edit` then gets redirected and processed by `PagesController#show`. However `http://localhost:3000/1?edit=true` or `http://localhost:3000/edit/1` work just fine and the region updates etc. So my hacky way of overriding `effective_slugs` is what's causing the problem.
+~~Basically `http://localhost:3000/edit/asd` hits `Effective::RegionsController#edit` then gets redirected and processed by `PagesController#show`. However `http://localhost:3000/1?edit=true` or `http://localhost:3000/edit/1` work just fine and the region updates etc. So my hacky way of overriding `effective_slugs` is what's causing the problem.~~
 
-Ahh, the parameterized url is meant to just hit the pages controller. But `http://localhost:3000/asd?edit=true` also doesn't manage to load the ckeditor stuff. What's up with that?
+~~Ahh, the parameterized url is meant to just hit the pages controller. But `http://localhost:3000/asd?edit=true` also doesn't manage to load the ckeditor stuff. What's up with that?~~
+
+The page with slug 'asd' didn't exist anymore and I was just reloading the wrong page.
 
 Interlude: We need to [strong_paramaterize the effective_menus params](https://github.com/sebastianiorga/effective_regions/commit/5b2c5af31b0a29da81dfbd7721aa1b580e39a529). Now we can save menus. (Assuming we visit on non-slugged path).
 
 Continuing: Hmmm. One of the pages didn't trigger the region editor. Heisenbug. Deleted it and all other pages + menus work fine.
 
-Last quibble: reloading `http://localhost:3000/worids-ofas?exit=%2Fadmin%2Fpages%2Fworids-ofas%2Fedit` breaks the CKEditor exit button. It correctly removes the edit=true param but does not return you to the admin page, even though if it was using the url it could. No idea what's going on there and it's now 7 hours from the start of this journey :D so maybe we'll look at it later. Oh to heck with it.
+###Last quibble
+
+Reloading the ckeditor page, `http://localhost:3000/worids-ofas?exit=%2Fadmin%2Fpages%2Fworids-ofas%2Fedit`, breaks the CKEditor exit button. It correctly removes the edit=true param but does not return you to the admin page, even though if it was using the url it could. No idea what's going on there and it's now 7 hours from the start of this journey :D so maybe we'll look at it later. Oh to heck with it.
 
 So the problem looks to be that the exit param is [not actually being used](https://github.com/code-and-effect/effective_ckeditor/blob/master/app/assets/javascripts/ckeditor/plugins/effective_regions/plugin.js.coffee#L64). Instead a cookie is being used. Aha. OK. This was a tricksy one again. I kept bashing my head against Rails because the cookie always vanished after I reloaded the editing page. Wat? Always. Even if I set it in the PagesController right before the request. Wat? Then I do a quick sublime ctrl-shift-f for cookies in the effective_ckeditor fork. [Lo and behold](https://github.com/code-and-effect/effective_ckeditor/blob/master/app/assets/javascripts/effective_ckeditor/init.js.coffee#L22). Now what to do about that? Ended up just commenting out the line. Cookies bad, url params good.
+
+An alternative is to check that the page is actually being unloaded and not refreshed. But why? Can you reach the CKEditor page for a region without hitting the RegionController at least once? Yes. If you add ?edit=true. So maybe the cookie should be set in the PagesController. Or you know. Params > cookies.
 
 This was a lot of fun debugging :)
